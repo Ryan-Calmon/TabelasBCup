@@ -5,11 +5,13 @@ import { Database } from '@/integrations/supabase/types';
 import { getOrCreateDefaultTournament } from '@/lib/defaultTournament';
 import { ArrowUpRight, Trophy } from 'lucide-react';
 import logo from '@/assets/logo.png';
+import CourtsBoard from '@/components/bracket/CourtsBoard';
 
 type Category = Database['public']['Tables']['categories']['Row'];
 
 const Index = () => {
   const [categories, setCategories] = useState<Category[]>([]);
+  const [tournamentId, setTournamentId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -20,6 +22,7 @@ const Index = () => {
   const loadCategories = async () => {
     const tournament = await getOrCreateDefaultTournament();
     if (!tournament) { setLoading(false); return; }
+    setTournamentId(tournament.id);
     const { data } = await supabase
       .from('categories')
       .select('*')
@@ -77,6 +80,9 @@ const Index = () => {
             </div>
           </div>
         </header>
+
+        {/* Quadras (live courts board) */}
+        {tournamentId && <CourtsBoard tournamentId={tournamentId} />}
 
         {/* Categories grid */}
         <section aria-labelledby="categorias">

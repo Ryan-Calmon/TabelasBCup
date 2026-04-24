@@ -61,6 +61,11 @@ const MatchCard = ({ match, teams, lane = 'winners', phaseLabel }: MatchCardProp
         </div>
         <span className={`font-mono-tab text-[10px] uppercase tracking-[0.25em] ${statusColor}`}>
           ● {STATUS_LABEL[match.status]}
+          {match.status === 'in_progress' && match.court_number && (
+            <span className="ml-1.5 px-1.5 py-px border border-ember/60 text-ember rounded-sm">
+              Q{match.court_number}
+            </span>
+          )}
         </span>
       </header>
 
@@ -77,7 +82,7 @@ const MatchCard = ({ match, teams, lane = 'winners', phaseLabel }: MatchCardProp
       {winner && (
         <footer className="px-4 pb-2 pt-1 border-t border-border bg-background/30">
           <p className="font-mono-tab text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
-            campeão
+            Vencedor
           </p>
           <p className="font-display text-lg uppercase text-accent leading-tight truncate">
             {winner.name}

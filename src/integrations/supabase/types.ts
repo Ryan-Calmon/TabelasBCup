@@ -55,6 +55,7 @@ export type Database = {
       matches: {
         Row: {
           category_id: string
+          court_number: number | null
           created_at: string
           depends_on_match1: number | null
           depends_on_match2: number | null
@@ -71,6 +72,7 @@ export type Database = {
         }
         Insert: {
           category_id: string
+          court_number?: number | null
           created_at?: string
           depends_on_match1?: number | null
           depends_on_match2?: number | null
@@ -87,6 +89,7 @@ export type Database = {
         }
         Update: {
           category_id?: string
+          court_number?: number | null
           created_at?: string
           depends_on_match1?: number | null
           depends_on_match2?: number | null

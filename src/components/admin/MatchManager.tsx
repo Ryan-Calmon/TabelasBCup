@@ -1641,12 +1641,51 @@ const MatchManager = ({ categoryId }: MatchManagerProps) => {
     }
   };
 
-  const handleUpdateMatch = async (matchId: string, winnerId: string) => {
+  const handleAssignCourt = async (matchId: string, courtNumber: number | null) => {
     try {
-      // Update the match with winner
+      if (courtNumber !== null) {
+        // Verify the court is free across the entire tournament (any category)
+        const { data: occupant, error: checkErr } = await supabase
+          .from('matches')
+          .select('id, match_number, category_id')
+          .eq('court_number', courtNumber)
+          .eq('status', 'in_progress')
+          .neq('id', matchId)
+          .maybeSingle();
+        if (checkErr) throw checkErr;
+        if (occupant) {
+          toast.error(`Quadra ${courtNumber} já está em uso pelo Jogo ${occupant.match_number}`);
+          return;
+        }
+      }
+
       const { error } = await supabase
         .from('matches')
-        .update({ winner_id: winnerId, status: 'completed' })
+        .update(
+          courtNumber === null
+            ? { court_number: null, status: 'pending' as const }
+            : { court_number: courtNumber, status: 'in_progress' as const }
+        )
+        .eq('id', matchId);
+      if (error) throw error;
+
+      toast.success(
+        courtNumber === null
+          ? 'Jogo retirado da quadra'
+          : `Jogo iniciado na Quadra ${courtNumber}`
+      );
+      loadData();
+    } catch (error: any) {
+      toast.error(error.message || 'Erro ao atualizar quadra');
+    }
+  };
+
+  const handleUpdateMatch = async (matchId: string, winnerId: string) => {
+    try {
+      // Update the match with winner and free up the court
+      const { error } = await supabase
+        .from('matches')
+        .update({ winner_id: winnerId, status: 'completed', court_number: null })
         .eq('id', matchId);
 
       if (error) throw error;
@@ -1919,9 +1958,32 @@ const MatchManager = ({ categoryId }: MatchManagerProps) => {
 
                   return (
                     <div key={match.id} className="p-3 sm:p-4 rounded-lg border border-border space-y-2">
-                      <div className="flex items-center justify-between">
+                      <div className="flex items-center justify-between flex-wrap gap-2">
                         <div className="font-bold text-primary text-sm sm:text-base">Jogo {match.match_number}</div>
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          {match.status !== 'completed' && (
+                            <>
+                              {match.court_number && (
+                                <span className="text-xs bg-yellow-500/20 text-yellow-600 dark:text-yellow-400 px-2 py-1 rounded font-bold">
+                                  EM QUADRA {match.court_number}
+                                </span>
+                              )}
+                              <select
+                                value={match.court_number ?? ''}
+                                onChange={(e) => {
+                                  const v = e.target.value;
+                                  handleAssignCourt(match.id, v === '' ? null : Number(v));
+                                }}
+                                className="text-xs bg-background border border-border rounded px-2 py-1"
+                              >
+                                <option value="">Sem quadra</option>
+                                <option value="1">Quadra 1</option>
+                                <option value="2">Quadra 2</option>
+                                <option value="3">Quadra 3</option>
+                                <option value="4">Quadra 4</option>
+                              </select>
+                            </>
+                          )}
                           {match.status === 'completed' && (
                             <>
                               <span className="text-xs bg-primary/20 text-primary px-2 py-1 rounded">

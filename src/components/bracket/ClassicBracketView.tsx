@@ -109,18 +109,35 @@ const BracketRow = ({ title, subtitle, rounds, matches, teams, row, numTeams }: 
         });
         return;
       }
-      round.matches.forEach((m, i) => {
+      // First pass: ideal midpoint for each match
+      const ideals: { num: number; y: number }[] = round.matches.map((m, i) => {
         const sources = [m.depends_on_match1, m.depends_on_match2]
           .map((dep) => (dep ? yByMatch.get(dep) : undefined))
           .filter((y): y is number => typeof y === 'number');
         if (sources.length > 0) {
-          const mid = sources.reduce((a, b) => a + b, 0) / sources.length;
-          yByMatch.set(m.match_number, mid);
-        } else {
-          // Fallback: stack
-          yByMatch.set(m.match_number, PADDING_Y + HEADER_H + i * (MATCH_HEIGHT + MATCH_GAP));
+          return { num: m.match_number, y: sources.reduce((a, b) => a + b, 0) / sources.length };
         }
+        return { num: m.match_number, y: PADDING_Y + HEADER_H + i * (MATCH_HEIGHT + MATCH_GAP) };
       });
+
+      // De-overlap: when multiple matches share the same (or near-same) midpoint
+      // — e.g. FINAL and 3º LUGAR both depending on the two semis — spread them
+      // around their average, preserving the original order.
+      const minStep = MATCH_HEIGHT + MATCH_GAP;
+      const order = ideals.map((it, i) => ({ ...it, i }));
+      // Sort by ideal Y, ties broken by original order
+      order.sort((a, b) => (a.y - b.y) || (a.i - b.i));
+      // Sweep top→bottom enforcing minStep
+      for (let k = 1; k < order.length; k++) {
+        if (order[k].y - order[k - 1].y < minStep) {
+          order[k].y = order[k - 1].y + minStep;
+        }
+      }
+      // Recenter the cluster around its original average so it doesn't drift down
+      const avgIdeal = ideals.reduce((s, it) => s + it.y, 0) / ideals.length;
+      const avgFinal = order.reduce((s, it) => s + it.y, 0) / order.length;
+      const recenter = avgIdeal - avgFinal;
+      order.forEach((it) => yByMatch.set(it.num, it.y + recenter));
     });
 
     // Vertically align: shift so the topmost card sits at PADDING_Y + HEADER_H
@@ -403,7 +420,9 @@ const ClassicMatch = ({ match, teams, x, y, w, h, row, isFinal, phaseLabel }: Cl
           'text-muted-foreground'
         }`}>
           {match.status === 'completed' ? '● final' :
-           match.status === 'in_progress' ? '● ao vivo' :
+           match.status === 'in_progress' ? (
+             <>● ao vivo{match.court_number ? ` · Q${match.court_number}` : ''}</>
+           ) :
            '○ pendente'}
         </span>
       </div>

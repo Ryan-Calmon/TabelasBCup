@@ -78,7 +78,7 @@ export function buildRounds(numTeams: number, matches: Match[]): RoundGroup[] {
         L('Chave de Perdedores R1', inRange(matches, 5, 6)),
         W('Vaga para a Semi-Final - Vencedores', inRange(matches, 7, 8)),
         L('Vaga para a Semi-Final - Perdedores', inRange(matches, 9, 10)),
-        W('Semifinais Cruzadas', inRange(matches, 11, 12)),
+        W('SEMI-FINAL', inRange(matches, 11, 12)),
         Finais(13, 14),
       ];
     case 9:
@@ -89,7 +89,7 @@ export function buildRounds(numTeams: number, matches: Match[]): RoundGroup[] {
         W('Vaga para a Semi-Final - Vencedores', inRange(matches, 8, 9)),
         L('Chave de Perdedores R2', inRange(matches, 10, 11)),
         L('Vaga para a Semi-Final - Perdedores', single(matches, 12)),
-        W('Semifinais', inRange(matches, 13, 14)),
+        W('SEMI-FINAL', inRange(matches, 13, 14)),
         Finais(15, 16),
       ];
     case 12:
@@ -100,7 +100,7 @@ export function buildRounds(numTeams: number, matches: Match[]): RoundGroup[] {
         L('Chave de Perdedores R2', inRange(matches, 13, 14)),
         W('Vaga para a Semi-Final - Vencedores', inRange(matches, 15, 16)),
         L('Vaga para a Semi-Final - Perdedores', inRange(matches, 17, 18)),
-        W('Semifinais', inRange(matches, 19, 20)),
+        W('SEMI-FINAL', inRange(matches, 19, 20)),
         Finais(21, 22),
       ];
     case 14:
@@ -112,7 +112,7 @@ export function buildRounds(numTeams: number, matches: Match[]): RoundGroup[] {
         W('Vaga para a Semi-Final - Vencedores', inRange(matches, 17, 18)),
         L('Chave de Perdedores R3', inRange(matches, 19, 20)),
         L('Vaga para a Semi-Final - Perdedores', inRange(matches, 21, 22)),
-        W('Semifinais', inRange(matches, 23, 24)),
+        W('SEMI-FINAL', inRange(matches, 23, 24)),
         Finais(25, 26),
       ];
     case 16:
@@ -124,7 +124,7 @@ export function buildRounds(numTeams: number, matches: Match[]): RoundGroup[] {
         W('Vaga para a Semi-Final - Vencedores', inRange(matches, 21, 22)),
         L('Chave de Perdedores R3', inRange(matches, 23, 24)),
         L('Vaga para a Semi-Final - Perdedores', inRange(matches, 25, 26)),
-        W('Semifinais', inRange(matches, 27, 28)),
+        W('SEMI-FINAL', inRange(matches, 27, 28)),
         Finais(29, 30),
       ];
     case 18:
@@ -138,7 +138,7 @@ export function buildRounds(numTeams: number, matches: Match[]): RoundGroup[] {
         W('Vaga para a Semi-Final - Vencedores', inRange(matches, 25, 26)),
         L('Chave de Perdedores R4', inRange(matches, 27, 28)),
         L('Vaga para a Semi-Final - Perdedores', inRange(matches, 29, 30)),
-        W('Semifinais', inRange(matches, 31, 32)),
+        W('SEMI-FINAL', inRange(matches, 31, 32)),
         Finais(33, 34),
       ];
     case 20:
@@ -152,7 +152,7 @@ export function buildRounds(numTeams: number, matches: Match[]): RoundGroup[] {
         W('Vaga para a Semi-Final - Vencedores', inRange(matches, 29, 30)),
         L('Chave de Perdedores R4', inRange(matches, 31, 32)),
         L('Vaga para a Semi-Final - Perdedores', inRange(matches, 33, 34)),
-        W('Semifinais', inRange(matches, 35, 36)),
+        W('SEMI-FINAL', inRange(matches, 35, 36)),
         Finais(37, 38),
       ];
     case 24:
@@ -166,7 +166,7 @@ export function buildRounds(numTeams: number, matches: Match[]): RoundGroup[] {
         W('Vaga para a Semi-Final - Vencedores', inRange(matches, 37, 38)),
         L('Chave de Perdedores R4', inRange(matches, 39, 40)),
         L('Vaga para a Semi-Final - Perdedores', inRange(matches, 41, 42)),
-        W('Semifinais', inRange(matches, 43, 44)),
+        W('SEMI-FINAL', inRange(matches, 43, 44)),
         Finais(45, 46),
       ];
     case 25:
@@ -181,7 +181,7 @@ export function buildRounds(numTeams: number, matches: Match[]): RoundGroup[] {
         L('Chave de Perdedores R5', inRange(matches, 39, 40)),
         W('Vaga para a Semi-Final - Vencedores', inRange(matches, 41, 42)),
         L('Vaga para a Semi-Final - Perdedores', inRange(matches, 43, 44)),
-        W('Semifinais', inRange(matches, 45, 46)),
+        W('SEMI-FINAL', inRange(matches, 45, 46)),
         Finais(47, 48),
       ];
     default:
