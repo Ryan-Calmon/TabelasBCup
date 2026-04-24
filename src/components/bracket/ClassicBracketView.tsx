@@ -92,18 +92,46 @@ const BracketRow = ({ title, subtitle, rounds, matches, teams, row, numTeams }: 
     return set;
   }, [rounds]);
 
-  // Position map for matches in this row (with column index for routing)
+  // Position map for matches in this row (with column index for routing).
+  // Strategy: column 0 stacks normally; subsequent columns place each match at
+  // the vertical midpoint of its source matches in the previous column. This
+  // guarantees connectors never overlap, even when later rounds have fewer
+  // games than earlier ones.
   const positions = useMemo(() => {
     const map = new Map<number, { x: number; y: number; w: number; h: number; col: number }>();
-    const rowHeight = laneHeight(rounds);
+
+    // Compute Y positions per column.
+    const yByMatch = new Map<number, number>();
+    rounds.forEach((round, colIdx) => {
+      if (colIdx === 0) {
+        round.matches.forEach((m, i) => {
+          yByMatch.set(m.match_number, PADDING_Y + HEADER_H + i * (MATCH_HEIGHT + MATCH_GAP));
+        });
+        return;
+      }
+      round.matches.forEach((m, i) => {
+        const sources = [m.depends_on_match1, m.depends_on_match2]
+          .map((dep) => (dep ? yByMatch.get(dep) : undefined))
+          .filter((y): y is number => typeof y === 'number');
+        if (sources.length > 0) {
+          const mid = sources.reduce((a, b) => a + b, 0) / sources.length;
+          yByMatch.set(m.match_number, mid);
+        } else {
+          // Fallback: stack
+          yByMatch.set(m.match_number, PADDING_Y + HEADER_H + i * (MATCH_HEIGHT + MATCH_GAP));
+        }
+      });
+    });
+
+    // Vertically align: shift so the topmost card sits at PADDING_Y + HEADER_H
+    const allY = Array.from(yByMatch.values());
+    const minY = allY.length > 0 ? Math.min(...allY) : PADDING_Y + HEADER_H;
+    const shift = PADDING_Y + HEADER_H - minY;
 
     rounds.forEach((round, colIdx) => {
       const x = PADDING_X + colIdx * (COL_WIDTH + COL_GAP);
-      const totalH = round.matches.length * MATCH_HEIGHT + Math.max(0, round.matches.length - 1) * MATCH_GAP;
-      // Vertically center each column inside the row
-      const offset = Math.max(0, (rowHeight - totalH) / 2);
-      round.matches.forEach((m, i) => {
-        const y = PADDING_Y + HEADER_H + offset + i * (MATCH_HEIGHT + MATCH_GAP);
+      round.matches.forEach((m) => {
+        const y = (yByMatch.get(m.match_number) ?? 0) + shift;
         map.set(m.match_number, { x, y, w: COL_WIDTH, h: MATCH_HEIGHT, col: colIdx });
       });
     });
@@ -111,7 +139,13 @@ const BracketRow = ({ title, subtitle, rounds, matches, teams, row, numTeams }: 
   }, [rounds]);
 
   const totalWidth = PADDING_X * 2 + rounds.length * COL_WIDTH + Math.max(0, rounds.length - 1) * COL_GAP;
-  const totalHeight = PADDING_Y * 2 + HEADER_H + laneHeight(rounds);
+  const totalHeight = (() => {
+    let maxBottom = 0;
+    positions.forEach((p) => {
+      if (p.y + p.h > maxBottom) maxBottom = p.y + p.h;
+    });
+    return maxBottom + PADDING_Y;
+  })();
 
   // Connectors only between matches that BOTH live in this row
   const connectors = useMemo(() => {

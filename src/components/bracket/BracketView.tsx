@@ -24,8 +24,8 @@ const BracketView = ({ categoryId }: BracketViewProps) => {
   const [category, setCategory] = useState<Category | null>(null);
   const [loading, setLoading] = useState(true);
   const [viewMode, setViewMode] = useState<ViewMode>(() => {
-    if (typeof window === 'undefined') return 'cards';
-    return (window.localStorage.getItem(VIEW_STORAGE_KEY) as ViewMode) || 'cards';
+    if (typeof window === 'undefined') return 'classic';
+    return (window.localStorage.getItem(VIEW_STORAGE_KEY) as ViewMode) || 'classic';
   });
 
   useEffect(() => {
