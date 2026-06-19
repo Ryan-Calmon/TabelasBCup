@@ -714,6 +714,111 @@ const MatchManager = ({ categoryId }: MatchManagerProps) => {
         {sourceMatch: 45, targetMatch: 48, takesWinner: true, position: 'team1'},
         {sourceMatch: 46, targetMatch: 48, takesWinner: true, position: 'team2'},
       ];
+    } else if (numTeams === 32) {
+      rules = [
+        {sourceMatch: 1, targetMatch: 17, takesWinner: false, position: 'team1'},
+        {sourceMatch: 2, targetMatch: 17, takesWinner: false, position: 'team2'},
+        {sourceMatch: 3, targetMatch: 18, takesWinner: false, position: 'team1'},
+        {sourceMatch: 4, targetMatch: 18, takesWinner: false, position: 'team2'},
+        {sourceMatch: 5, targetMatch: 19, takesWinner: false, position: 'team1'},
+        {sourceMatch: 6, targetMatch: 19, takesWinner: false, position: 'team2'},
+        {sourceMatch: 7, targetMatch: 20, takesWinner: false, position: 'team1'},
+        {sourceMatch: 8, targetMatch: 20, takesWinner: false, position: 'team2'},
+        {sourceMatch: 9, targetMatch: 21, takesWinner: false, position: 'team1'},
+        {sourceMatch: 10, targetMatch: 21, takesWinner: false, position: 'team2'},
+        {sourceMatch: 11, targetMatch: 22, takesWinner: false, position: 'team1'},
+        {sourceMatch: 12, targetMatch: 22, takesWinner: false, position: 'team2'},
+        {sourceMatch: 13, targetMatch: 23, takesWinner: false, position: 'team1'},
+        {sourceMatch: 14, targetMatch: 23, takesWinner: false, position: 'team2'},
+        {sourceMatch: 15, targetMatch: 24, takesWinner: false, position: 'team1'},
+        {sourceMatch: 16, targetMatch: 24, takesWinner: false, position: 'team2'},
+
+        {sourceMatch: 1, targetMatch: 25, takesWinner: true, position: 'team1'},
+        {sourceMatch: 2, targetMatch: 25, takesWinner: true, position: 'team2'},
+        {sourceMatch: 3, targetMatch: 26, takesWinner: true, position: 'team1'},
+        {sourceMatch: 4, targetMatch: 26, takesWinner: true, position: 'team2'},
+        {sourceMatch: 5, targetMatch: 27, takesWinner: true, position: 'team1'},
+        {sourceMatch: 6, targetMatch: 27, takesWinner: true, position: 'team2'},
+        {sourceMatch: 7, targetMatch: 28, takesWinner: true, position: 'team1'},
+        {sourceMatch: 8, targetMatch: 28, takesWinner: true, position: 'team2'},
+        {sourceMatch: 9, targetMatch: 29, takesWinner: true, position: 'team1'},
+        {sourceMatch: 10, targetMatch: 29, takesWinner: true, position: 'team2'},
+        {sourceMatch: 11, targetMatch: 30, takesWinner: true, position: 'team1'},
+        {sourceMatch: 12, targetMatch: 30, takesWinner: true, position: 'team2'},
+        {sourceMatch: 13, targetMatch: 31, takesWinner: true, position: 'team1'},
+        {sourceMatch: 14, targetMatch: 31, takesWinner: true, position: 'team2'},
+        {sourceMatch: 15, targetMatch: 32, takesWinner: true, position: 'team1'},
+        {sourceMatch: 16, targetMatch: 32, takesWinner: true, position: 'team2'},
+
+        {sourceMatch: 25, targetMatch: 33, takesWinner: false, position: 'team1'},
+        {sourceMatch: 24, targetMatch: 33, takesWinner: true, position: 'team2'},
+        {sourceMatch: 26, targetMatch: 34, takesWinner: false, position: 'team1'},
+        {sourceMatch: 23, targetMatch: 34, takesWinner: true, position: 'team2'},
+        {sourceMatch: 27, targetMatch: 35, takesWinner: false, position: 'team1'},
+        {sourceMatch: 22, targetMatch: 35, takesWinner: true, position: 'team2'},
+        {sourceMatch: 28, targetMatch: 36, takesWinner: false, position: 'team1'},
+        {sourceMatch: 21, targetMatch: 36, takesWinner: true, position: 'team2'},
+        {sourceMatch: 29, targetMatch: 37, takesWinner: false, position: 'team1'},
+        {sourceMatch: 20, targetMatch: 37, takesWinner: true, position: 'team2'},
+        {sourceMatch: 30, targetMatch: 38, takesWinner: false, position: 'team1'},
+        {sourceMatch: 19, targetMatch: 38, takesWinner: true, position: 'team2'},
+        {sourceMatch: 31, targetMatch: 39, takesWinner: false, position: 'team1'},
+        {sourceMatch: 18, targetMatch: 39, takesWinner: true, position: 'team2'},
+        {sourceMatch: 32, targetMatch: 40, takesWinner: false, position: 'team1'},
+        {sourceMatch: 17, targetMatch: 40, takesWinner: true, position: 'team2'},
+
+        {sourceMatch: 33, targetMatch: 41, takesWinner: true, position: 'team1'},
+        {sourceMatch: 34, targetMatch: 41, takesWinner: true, position: 'team2'},
+        {sourceMatch: 35, targetMatch: 42, takesWinner: true, position: 'team1'},
+        {sourceMatch: 36, targetMatch: 42, takesWinner: true, position: 'team2'},
+        {sourceMatch: 37, targetMatch: 43, takesWinner: true, position: 'team1'},
+        {sourceMatch: 38, targetMatch: 43, takesWinner: true, position: 'team2'},
+        {sourceMatch: 39, targetMatch: 44, takesWinner: true, position: 'team1'},
+        {sourceMatch: 40, targetMatch: 44, takesWinner: true, position: 'team2'},
+
+        {sourceMatch: 25, targetMatch: 45, takesWinner: true, position: 'team1'},
+        {sourceMatch: 26, targetMatch: 45, takesWinner: true, position: 'team2'},
+        {sourceMatch: 27, targetMatch: 46, takesWinner: true, position: 'team1'},
+        {sourceMatch: 28, targetMatch: 46, takesWinner: true, position: 'team2'},
+        {sourceMatch: 29, targetMatch: 47, takesWinner: true, position: 'team1'},
+        {sourceMatch: 30, targetMatch: 47, takesWinner: true, position: 'team2'},
+        {sourceMatch: 31, targetMatch: 48, takesWinner: true, position: 'team1'},
+        {sourceMatch: 32, targetMatch: 48, takesWinner: true, position: 'team2'},
+
+        {sourceMatch: 43, targetMatch: 49, takesWinner: true, position: 'team1'},
+        {sourceMatch: 45, targetMatch: 49, takesWinner: false, position: 'team2'},
+        {sourceMatch: 44, targetMatch: 50, takesWinner: true, position: 'team1'},
+        {sourceMatch: 46, targetMatch: 50, takesWinner: false, position: 'team2'},
+        {sourceMatch: 41, targetMatch: 51, takesWinner: true, position: 'team1'},
+        {sourceMatch: 47, targetMatch: 51, takesWinner: false, position: 'team2'},
+        {sourceMatch: 42, targetMatch: 52, takesWinner: true, position: 'team1'},
+        {sourceMatch: 48, targetMatch: 52, takesWinner: false, position: 'team2'},
+
+        {sourceMatch: 50, targetMatch: 53, takesWinner: true, position: 'team1'},
+        {sourceMatch: 49, targetMatch: 53, takesWinner: true, position: 'team2'},
+        {sourceMatch: 52, targetMatch: 54, takesWinner: true, position: 'team1'},
+        {sourceMatch: 51, targetMatch: 54, takesWinner: true, position: 'team2'},
+
+        {sourceMatch: 45, targetMatch: 55, takesWinner: true, position: 'team1'},
+        {sourceMatch: 46, targetMatch: 55, takesWinner: true, position: 'team2'},
+        {sourceMatch: 47, targetMatch: 56, takesWinner: true, position: 'team1'},
+        {sourceMatch: 48, targetMatch: 56, takesWinner: true, position: 'team2'},
+
+        {sourceMatch: 54, targetMatch: 57, takesWinner: true, position: 'team1'},
+        {sourceMatch: 55, targetMatch: 57, takesWinner: false, position: 'team2'},
+        {sourceMatch: 53, targetMatch: 58, takesWinner: true, position: 'team1'},
+        {sourceMatch: 56, targetMatch: 58, takesWinner: false, position: 'team2'},
+
+        {sourceMatch: 55, targetMatch: 59, takesWinner: true, position: 'team1'},
+        {sourceMatch: 58, targetMatch: 59, takesWinner: true, position: 'team2'},
+        {sourceMatch: 56, targetMatch: 60, takesWinner: true, position: 'team1'},
+        {sourceMatch: 57, targetMatch: 60, takesWinner: true, position: 'team2'},
+
+        {sourceMatch: 59, targetMatch: 61, takesWinner: false, position: 'team1'},
+        {sourceMatch: 60, targetMatch: 61, takesWinner: false, position: 'team2'},
+        {sourceMatch: 59, targetMatch: 62, takesWinner: true, position: 'team1'},
+        {sourceMatch: 60, targetMatch: 62, takesWinner: true, position: 'team2'},
+      ];
     }
     
     // Build the dependencies map with takesWinner information for each position
@@ -1585,6 +1690,41 @@ const MatchManager = ({ categoryId }: MatchManagerProps) => {
           else if (i >= 45) roundType = 'semifinals';
           else if (i >= 41 && i <= 42) roundType = 'winners';
           
+          matchesData.push({
+            category_id: categoryId,
+            match_number: i,
+            round_type: roundType,
+            status: 'pending' as const,
+            depends_on_match1: deps.match1 || null,
+            depends_on_match2: deps.match2 || null,
+            takes_winner_match1: deps.takesWinnerMatch1 !== undefined ? deps.takesWinnerMatch1 : null,
+            takes_winner_match2: deps.takesWinnerMatch2 !== undefined ? deps.takesWinnerMatch2 : null,
+          });
+        }
+      } else if (numTeams === 32) {
+        // 32 duplas - 62 jogos
+        // Jogos 1-16: Primeira rodada (1x32, 2x31, ..., 16x17)
+        for (let i = 0; i < 16; i++) {
+          matchesData.push({
+            category_id: categoryId,
+            match_number: i + 1,
+            round_type: 'winners',
+            team1_id: shuffled[i].id,
+            team2_id: shuffled[31 - i].id,
+            status: 'pending' as const,
+          });
+        }
+
+        // Jogos 17-62: Restante da chave conforme dependencias
+        for (let i = 17; i <= 62; i++) {
+          const deps = dependenciesMap[i] || {};
+          let roundType = 'losers';
+
+          if (i === 62) roundType = 'finals';
+          else if (i === 61) roundType = 'third_place';
+          else if (i >= 59 && i <= 60) roundType = 'semifinals';
+          else if ((i >= 25 && i <= 32) || (i >= 45 && i <= 48) || (i >= 55 && i <= 56)) roundType = 'winners';
+
           matchesData.push({
             category_id: categoryId,
             match_number: i,

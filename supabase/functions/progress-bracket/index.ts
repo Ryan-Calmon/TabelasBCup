@@ -1,5 +1,5 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.3';
-import { progressionRules8, progressionRules9, progressionRules12, progressionRules14, progressionRules16, progressionRules18, progressionRules20, progressionRules24, progressionRules25 } from './bracket-rules.ts';
+import { progressionRules8, progressionRules9, progressionRules12, progressionRules14, progressionRules16, progressionRules18, progressionRules20, progressionRules24, progressionRules25, progressionRules32 } from './bracket-rules.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -131,6 +131,7 @@ Deno.serve(async (req) => {
       : categoryData.num_teams === 18 ? progressionRules18
       : categoryData.num_teams === 20 ? progressionRules20
       : categoryData.num_teams === 25 ? progressionRules25
+      : categoryData.num_teams === 32 ? progressionRules32
       : progressionRules24;
 
     // Fetch all matches for this category

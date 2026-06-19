@@ -184,6 +184,21 @@ export function buildRounds(numTeams: number, matches: Match[]): RoundGroup[] {
         W('SEMI-FINAL', inRange(matches, 45, 46)),
         Finais(47, 48),
       ];
+    case 32:
+      return [
+        W('Primeira Rodada', inRange(matches, 1, 16)),
+        L('Chave de Perdedores R1', inRange(matches, 17, 24)),
+        W('Chave de Vencedores R1', inRange(matches, 25, 32)),
+        L('Chave de Perdedores R2', inRange(matches, 33, 40)),
+        L('Chave de Perdedores R3', inRange(matches, 41, 44)),
+        W('Chave de Vencedores R2', inRange(matches, 45, 48)),
+        L('Chave de Perdedores R4', inRange(matches, 49, 52)),
+        L('Chave de Perdedores R5', inRange(matches, 53, 54)),
+        W('Vaga para a Semi-Final - Vencedores', inRange(matches, 55, 56)),
+        L('Vaga para a Semi-Final - Perdedores', inRange(matches, 57, 58)),
+        W('SEMI-FINAL', inRange(matches, 59, 60)),
+        Finais(61, 62),
+      ];
     default:
       return [];
   }
@@ -207,6 +222,7 @@ export function getFinalsMatchNumbers(numTeams: number): FinalsInfo {
     case 20: return { finalMatchNumber: 38, thirdPlaceMatchNumber: 37 };
     case 24: return { finalMatchNumber: 46, thirdPlaceMatchNumber: 45 };
     case 25: return { finalMatchNumber: 48, thirdPlaceMatchNumber: 47 };
+    case 32: return { finalMatchNumber: 62, thirdPlaceMatchNumber: 61 };
     default: return { finalMatchNumber: 30, thirdPlaceMatchNumber: 29 };
   }
 }

@@ -19,7 +19,7 @@ interface CategoryManagerProps {
 
 const CategoryManager = ({ tournamentId, categories, onUpdate }: CategoryManagerProps) => {
   const [categoryName, setCategoryName] = useState('');
-  const [numTeams, setNumTeams] = useState<8 | 9 | 12 | 14 | 16 | 18 | 20 | 24 | 25>(16);
+  const [numTeams, setNumTeams] = useState<8 | 9 | 12 | 14 | 16 | 18 | 20 | 24 | 25 | 32>(16);
   const [loading, setLoading] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editingName, setEditingName] = useState('');
@@ -178,7 +178,7 @@ const CategoryManager = ({ tournamentId, categories, onUpdate }: CategoryManager
               <select
                 id="numTeams"
                 value={numTeams}
-                onChange={(e) => setNumTeams(Number(e.target.value) as 8 | 9 | 12 | 14 | 16 | 18 | 20 | 24 | 25)}
+                onChange={(e) => setNumTeams(Number(e.target.value) as 8 | 9 | 12 | 14 | 16 | 18 | 20 | 24 | 25 | 32)}
                 className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                 disabled={loading}
               >
@@ -191,6 +191,7 @@ const CategoryManager = ({ tournamentId, categories, onUpdate }: CategoryManager
                 <option value={20}>20 duplas (38 jogos)</option>
                 <option value={24}>24 duplas (46 jogos)</option>
                 <option value={25}>25 duplas (48 jogos)</option>
+                <option value={32}>32 duplas (62 jogos)</option>
               </select>
             </div>
             <Button type="submit" disabled={loading} className="gap-2 w-full sm:w-auto">
