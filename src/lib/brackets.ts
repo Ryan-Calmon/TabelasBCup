@@ -62,6 +62,11 @@ function reorderRoundsByDependencies(rounds: RoundGroup[]): RoundGroup[] {
   return rounds;
 }
 
+const pickMatches = (matches: Match[], orderedMatchNumbers: number[]) =>
+  orderedMatchNumbers
+    .map((matchNumber) => matches.find((match) => match.match_number === matchNumber))
+    .filter((match): match is Match => Boolean(match));
+
 export function buildRounds(numTeams: number, matches: Match[]): RoundGroup[] {
   const W = (name: string, matches: Match[]): RoundGroup => ({ name, lane: 'winners', matches });
   const L = (name: string, matches: Match[]): RoundGroup => ({ name, lane: 'losers', matches });
@@ -129,9 +134,10 @@ export function buildRounds(numTeams: number, matches: Match[]): RoundGroup[] {
       ];
     case 17:
       return [
-        W('Primeira Rodada', inRange(matches, 1, 8)),
+        W('Primeira Rodada', single(matches, 1)),
+        W('Segunda Rodada', pickMatches(matches, [9, 8, 7, 6, 5, 4, 3, 2])),
+        W('Quartas de Final', pickMatches(matches, [14, 13, 12, 11])),
         L('Chave de Perdedores R1', single(matches, 10)),
-        W('Segunda Rodada', [...single(matches, 9), ...inRange(matches, 11, 14)]),
         L('Chave de Perdedores R2', inRange(matches, 15, 18)),
         L('Chave de Perdedores R3', inRange(matches, 19, 22)),
         W('Vaga para a Semi-Final - Vencedores', inRange(matches, 23, 24)),
