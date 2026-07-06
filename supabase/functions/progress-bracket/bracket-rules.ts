@@ -572,6 +572,104 @@ export const progressionRules16: MatchProgressionRule[] = [
   { sourceMatch: 28, targetMatch: 30, takesWinner: true, position: 'team2' },
 ];
 
+// Regras de progressão para 17 duplas (32 jogos)
+export const progressionRules17: MatchProgressionRule[] = [
+  // Jogo 9: Dupla 17 x Vencedor do jogo 1
+  { sourceMatch: 1, targetMatch: 9, takesWinner: true, position: 'team2' },
+
+  // Jogo 10: Perdedor do jogo 1 x Perdedor do jogo 2
+  { sourceMatch: 1, targetMatch: 10, takesWinner: false, position: 'team1' },
+  { sourceMatch: 2, targetMatch: 10, takesWinner: false, position: 'team2' },
+
+  // Jogo 11: Vencedor do jogo 3 x Vencedor do jogo 2
+  { sourceMatch: 3, targetMatch: 11, takesWinner: true, position: 'team1' },
+  { sourceMatch: 2, targetMatch: 11, takesWinner: true, position: 'team2' },
+
+  // Jogo 12: Vencedor do jogo 5 x Vencedor do jogo 4
+  { sourceMatch: 5, targetMatch: 12, takesWinner: true, position: 'team1' },
+  { sourceMatch: 4, targetMatch: 12, takesWinner: true, position: 'team2' },
+
+  // Jogo 13: Vencedor do jogo 7 x Vencedor do jogo 6
+  { sourceMatch: 7, targetMatch: 13, takesWinner: true, position: 'team1' },
+  { sourceMatch: 6, targetMatch: 13, takesWinner: true, position: 'team2' },
+
+  // Jogo 14: Vencedor do jogo 8 x Vencedor do jogo 9
+  { sourceMatch: 8, targetMatch: 14, takesWinner: true, position: 'team1' },
+  { sourceMatch: 9, targetMatch: 14, takesWinner: true, position: 'team2' },
+
+  // Jogo 15: Vencedor do jogo 10 x Perdedor do jogo 3
+  { sourceMatch: 10, targetMatch: 15, takesWinner: true, position: 'team1' },
+  { sourceMatch: 3, targetMatch: 15, takesWinner: false, position: 'team2' },
+
+  // Jogo 16: Perdedor do jogo 4 x Perdedor do jogo 5
+  { sourceMatch: 4, targetMatch: 16, takesWinner: false, position: 'team1' },
+  { sourceMatch: 5, targetMatch: 16, takesWinner: false, position: 'team2' },
+
+  // Jogo 17: Perdedor do jogo 6 x Perdedor do jogo 7
+  { sourceMatch: 6, targetMatch: 17, takesWinner: false, position: 'team1' },
+  { sourceMatch: 7, targetMatch: 17, takesWinner: false, position: 'team2' },
+
+  // Jogo 18: Perdedor do jogo 8 x Perdedor do jogo 9
+  { sourceMatch: 8, targetMatch: 18, takesWinner: false, position: 'team1' },
+  { sourceMatch: 9, targetMatch: 18, takesWinner: false, position: 'team2' },
+
+  // Jogo 19: Vencedor do jogo 15 x Perdedor do jogo 14
+  { sourceMatch: 15, targetMatch: 19, takesWinner: true, position: 'team1' },
+  { sourceMatch: 14, targetMatch: 19, takesWinner: false, position: 'team2' },
+
+  // Jogo 20: Vencedor do jogo 16 x Perdedor do jogo 13
+  { sourceMatch: 16, targetMatch: 20, takesWinner: true, position: 'team1' },
+  { sourceMatch: 13, targetMatch: 20, takesWinner: false, position: 'team2' },
+
+  // Jogo 21: Vencedor do jogo 17 x Perdedor do jogo 12
+  { sourceMatch: 17, targetMatch: 21, takesWinner: true, position: 'team1' },
+  { sourceMatch: 12, targetMatch: 21, takesWinner: false, position: 'team2' },
+
+  // Jogo 22: Vencedor do jogo 18 x Perdedor do jogo 11
+  { sourceMatch: 18, targetMatch: 22, takesWinner: true, position: 'team1' },
+  { sourceMatch: 11, targetMatch: 22, takesWinner: false, position: 'team2' },
+
+  // Jogo 23 (Vaga para a semi-final): Vencedor do jogo 14 x Vencedor do jogo 13
+  { sourceMatch: 14, targetMatch: 23, takesWinner: true, position: 'team1' },
+  { sourceMatch: 13, targetMatch: 23, takesWinner: true, position: 'team2' },
+
+  // Jogo 24 (Vaga para a semi-final): Vencedor do jogo 12 x Vencedor do jogo 11
+  { sourceMatch: 12, targetMatch: 24, takesWinner: true, position: 'team1' },
+  { sourceMatch: 11, targetMatch: 24, takesWinner: true, position: 'team2' },
+
+  // Jogo 25: Vencedor do jogo 19 x Vencedor do jogo 20
+  { sourceMatch: 19, targetMatch: 25, takesWinner: true, position: 'team1' },
+  { sourceMatch: 20, targetMatch: 25, takesWinner: true, position: 'team2' },
+
+  // Jogo 26: Vencedor do jogo 21 x Vencedor do jogo 22
+  { sourceMatch: 21, targetMatch: 26, takesWinner: true, position: 'team1' },
+  { sourceMatch: 22, targetMatch: 26, takesWinner: true, position: 'team2' },
+
+  // Jogo 27: Vencedor do jogo 25 x Perdedor do jogo 24
+  { sourceMatch: 25, targetMatch: 27, takesWinner: true, position: 'team1' },
+  { sourceMatch: 24, targetMatch: 27, takesWinner: false, position: 'team2' },
+
+  // Jogo 28: Vencedor do jogo 26 x Perdedor do jogo 23
+  { sourceMatch: 26, targetMatch: 28, takesWinner: true, position: 'team1' },
+  { sourceMatch: 23, targetMatch: 28, takesWinner: false, position: 'team2' },
+
+  // Jogo 29 (Semi Final): Vencedor do jogo 23 x Vencedor do jogo 27
+  { sourceMatch: 23, targetMatch: 29, takesWinner: true, position: 'team1' },
+  { sourceMatch: 27, targetMatch: 29, takesWinner: true, position: 'team2' },
+
+  // Jogo 30 (Semi Final): Vencedor do jogo 24 x Vencedor do jogo 28
+  { sourceMatch: 24, targetMatch: 30, takesWinner: true, position: 'team1' },
+  { sourceMatch: 28, targetMatch: 30, takesWinner: true, position: 'team2' },
+
+  // Jogo 31 (Terceiro Lugar): Perdedor do jogo 29 x Perdedor do jogo 30
+  { sourceMatch: 29, targetMatch: 31, takesWinner: false, position: 'team1' },
+  { sourceMatch: 30, targetMatch: 31, takesWinner: false, position: 'team2' },
+
+  // Jogo 32 (Final): Vencedor do jogo 29 x Vencedor do jogo 30
+  { sourceMatch: 29, targetMatch: 32, takesWinner: true, position: 'team1' },
+  { sourceMatch: 30, targetMatch: 32, takesWinner: true, position: 'team2' },
+];
+
 // Regras de progressão para 20 duplas (38 jogos)
 export const progressionRules20: MatchProgressionRule[] = [
   // Jogo 5: Vencedor do jogo 1 x Dupla 9
