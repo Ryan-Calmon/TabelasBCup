@@ -104,9 +104,27 @@ const BracketRow = ({ title, subtitle, rounds, matches, teams, row, numTeams }: 
     const yByMatch = new Map<number, number>();
     rounds.forEach((round, colIdx) => {
       if (colIdx === 0) {
-        round.matches.forEach((m, i) => {
-          yByMatch.set(m.match_number, PADDING_Y + HEADER_H + i * (MATCH_HEIGHT + MATCH_GAP));
-        });
+        const nextRound = rounds[1];
+        // When col 0 has fewer matches than col 1, anchor each col-0 match at the
+        // index-based Y of its dependent in col 1. This ensures that a match near
+        // the bottom of col 1 (e.g. game 10) doesn't end up visually near the top
+        // just because its source in col 0 is only one step below the first match.
+        if (nextRound && nextRound.matches.length > round.matches.length) {
+          const col1IdxY = (i: number) => PADDING_Y + HEADER_H + i * (MATCH_HEIGHT + MATCH_GAP);
+          round.matches.forEach((m) => {
+            const depIdx = nextRound.matches.findIndex(
+              (nm) => nm.depends_on_match1 === m.match_number || nm.depends_on_match2 === m.match_number,
+            );
+            yByMatch.set(
+              m.match_number,
+              depIdx >= 0 ? col1IdxY(depIdx) : col1IdxY(round.matches.indexOf(m)),
+            );
+          });
+        } else {
+          round.matches.forEach((m, i) => {
+            yByMatch.set(m.match_number, PADDING_Y + HEADER_H + i * (MATCH_HEIGHT + MATCH_GAP));
+          });
+        }
         return;
       }
       // First pass: ideal midpoint for each match

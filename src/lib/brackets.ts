@@ -148,10 +148,10 @@ export function buildRounds(numTeams: number, matches: Match[]): RoundGroup[] {
       ];
     case 18:
       return [
-        W('Primeira Rodada', inRange(matches, 1, 8)),
-        W('Segunda Rodada', inRange(matches, 9, 10)),
+        W('Primeira Rodada', pickMatches(matches, [1, 2])),
+        W('Segunda Rodada', pickMatches(matches, [9, 3, 4, 5, 6, 7, 8, 10])),
         L('Chave de Perdedores R1', inRange(matches, 11, 12)),
-        W('Quartas — Vencedores', inRange(matches, 13, 16)),
+        W('Terceira Rodada', pickMatches(matches, [13, 14, 15, 16])),
         L('Chave de Perdedores R2', inRange(matches, 17, 20)),
         L('Chave de Perdedores R3', inRange(matches, 21, 24)),
         W('Vaga para a Semi-Final - Vencedores', inRange(matches, 25, 26)),
