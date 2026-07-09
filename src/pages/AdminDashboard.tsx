@@ -71,6 +71,7 @@ const AdminDashboard = () => {
       .from('categories')
       .select('*')
       .eq('tournament_id', tournamentId)
+        .order('display_order')
       .order('created_at');
 
     if (error) {

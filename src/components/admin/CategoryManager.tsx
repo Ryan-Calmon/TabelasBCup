@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
-import { Plus, Trash2, Play, Edit2, Check, X, Eye, EyeOff } from 'lucide-react';
+import { Plus, Trash2, Play, Edit2, Check, X, Eye, EyeOff, ArrowUp, ArrowDown } from 'lucide-react';
 import { Database } from '@/integrations/supabase/types';
 
 type Category = Database['public']['Tables']['categories']['Row'];
@@ -24,6 +24,14 @@ const CategoryManager = ({ tournamentId, categories, onUpdate }: CategoryManager
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editingName, setEditingName] = useState('');
 
+  const orderedCategories = [...categories].sort((first, second) => {
+    if (first.display_order !== second.display_order) {
+      return first.display_order - second.display_order;
+    }
+
+    return new Date(first.created_at).getTime() - new Date(second.created_at).getTime();
+  });
+
   const handleCreateCategory = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -35,9 +43,15 @@ const CategoryManager = ({ tournamentId, categories, onUpdate }: CategoryManager
     setLoading(true);
 
     try {
+      const nextDisplayOrder = orderedCategories.reduce(
+        (highestOrder, category) => Math.max(highestOrder, category.display_order),
+        -1,
+      ) + 1;
+
       const { error } = await supabase
         .from('categories')
         .insert({
+          display_order: nextDisplayOrder,
           tournament_id: tournamentId,
           name: categoryName.trim(),
           num_teams: numTeams,
@@ -140,6 +154,39 @@ const CategoryManager = ({ tournamentId, categories, onUpdate }: CategoryManager
     }
   };
 
+  const handleMoveCategory = async (categoryId: string, direction: 'up' | 'down') => {
+    const currentIndex = orderedCategories.findIndex((category) => category.id === categoryId);
+    const targetIndex = direction === 'up' ? currentIndex - 1 : currentIndex + 1;
+
+    if (currentIndex === -1 || targetIndex < 0 || targetIndex >= orderedCategories.length) {
+      return;
+    }
+
+    const currentCategory = orderedCategories[currentIndex];
+    const targetCategory = orderedCategories[targetIndex];
+
+    try {
+      const [{ error: currentError }, { error: targetError }] = await Promise.all([
+        supabase
+          .from('categories')
+          .update({ display_order: targetCategory.display_order })
+          .eq('id', currentCategory.id),
+        supabase
+          .from('categories')
+          .update({ display_order: currentCategory.display_order })
+          .eq('id', targetCategory.id),
+      ]);
+
+      if (currentError) throw currentError;
+      if (targetError) throw targetError;
+
+      toast.success('Ordem das categorias atualizada!');
+      onUpdate();
+    } catch (error: any) {
+      toast.error(error.message || 'Erro ao reordenar categorias');
+    }
+  };
+
   const getStatusBadge = (status: string, isPublic: boolean) => {
     if (!isPublic) {
       return <Badge variant="secondary" className="gap-1"><EyeOff className="w-3 h-3" />Oculta</Badge>;
@@ -203,14 +250,14 @@ const CategoryManager = ({ tournamentId, categories, onUpdate }: CategoryManager
         </CardContent>
       </Card>
 
-      {categories.length > 0 && (
+      {orderedCategories.length > 0 && (
         <Card>
           <CardHeader className="p-4 sm:p-6">
             <CardTitle className="text-lg sm:text-xl">Categorias Existentes</CardTitle>
           </CardHeader>
           <CardContent className="p-4 sm:p-6">
             <div className="space-y-3">
-              {categories.map((category) => (
+              {orderedCategories.map((category, index) => (
                 <div
                   key={category.id}
                   className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-3 sm:p-4 rounded-lg border border-border bg-card hover:bg-accent/5 transition-colors"
@@ -249,6 +296,26 @@ const CategoryManager = ({ tournamentId, categories, onUpdate }: CategoryManager
                   
                   {editingId !== category.id && (
                     <div className="flex items-center gap-2 justify-end">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => handleMoveCategory(category.id, 'up')}
+                        title="Mover para cima"
+                        className="flex-shrink-0"
+                        disabled={index === 0}
+                      >
+                        <ArrowUp className="w-4 h-4" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => handleMoveCategory(category.id, 'down')}
+                        title="Mover para baixo"
+                        className="flex-shrink-0"
+                        disabled={index === orderedCategories.length - 1}
+                      >
+                        <ArrowDown className="w-4 h-4" />
+                      </Button>
                       <Button
                         variant="ghost"
                         size="icon"

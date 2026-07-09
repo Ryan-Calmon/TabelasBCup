@@ -36,7 +36,9 @@ const TournamentView = () => {
       .from('categories')
       .select('*')
       .eq('tournament_id', tournamentId)
-      .eq('is_public', true);
+      .eq('is_public', true)
+      .order('display_order')
+      .order('created_at');
 
     setTournament(tournamentData);
     setCategories(categoriesData || []);

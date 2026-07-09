@@ -67,7 +67,9 @@ const AdminTournamentEdit = () => {
     const { data: categoriesData } = await supabase
       .from('categories')
       .select('*')
-      .eq('tournament_id', tournamentId);
+      .eq('tournament_id', tournamentId)
+      .order('display_order')
+      .order('created_at');
 
     setTournament(tournamentData);
     setCategories(categoriesData || []);

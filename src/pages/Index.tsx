@@ -29,6 +29,7 @@ const Index = () => {
       .eq('tournament_id', tournament.id)
       .neq('status', 'draft')
       .eq('is_public', true)
+      .order('display_order')
       .order('created_at');
     setCategories(data || []);
     setLoading(false);
