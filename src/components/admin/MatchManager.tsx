@@ -10,6 +10,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { Database } from '@/integrations/supabase/types';
 import { Textarea } from '@/components/ui/textarea';
 import { getFinalsMatchNumbers } from '@/lib/brackets';
+import { NotifyMatchPopover } from './NotifyMatchPopover';
 
 type Team = Database['public']['Tables']['teams']['Row'];
 type Match = Database['public']['Tables']['matches']['Row'];
@@ -24,12 +25,14 @@ const MatchManager = ({ categoryId }: MatchManagerProps) => {
   const [matches, setMatches] = useState<Match[]>([]);
   const [category, setCategory] = useState<Category | null>(null);
   const [newTeamName, setNewTeamName] = useState('');
+  const [newTeamPhone, setNewTeamPhone] = useState('');
   const [bulkTeamNames, setBulkTeamNames] = useState('');
   const [loading, setLoading] = useState(false);
   const [shuffleTeams, setShuffleTeams] = useState(true);
   const [resetMatchId, setResetMatchId] = useState<string | null>(null);
   const [editingTeamId, setEditingTeamId] = useState<string | null>(null);
   const [editingTeamName, setEditingTeamName] = useState('');
+  const [notifications, setNotifications] = useState<Record<string, any[]>>({});
 
   useEffect(() => {
     loadData();
@@ -57,6 +60,24 @@ const MatchManager = ({ categoryId }: MatchManagerProps) => {
     setCategory(categoryData);
     setTeams(teamsData || []);
     setMatches(matchesData || []);
+
+    // Fetch notifications for all matches in this category
+    if (matchesData && matchesData.length > 0) {
+      const matchIds = matchesData.map((m: any) => m.id);
+      const { data: notifData } = await supabase
+        .from('match_notifications')
+        .select('match_id, team_id, status, sent_at')
+        .in('match_id', matchIds);
+
+      if (notifData) {
+        const grouped: Record<string, any[]> = {};
+        notifData.forEach((n: any) => {
+          if (!grouped[n.match_id]) grouped[n.match_id] = [];
+          grouped[n.match_id].push(n);
+        });
+        setNotifications(grouped);
+      }
+    }
   };
 
   // Helper function to get match dependencies based on progression rules
@@ -922,18 +943,30 @@ const MatchManager = ({ categoryId }: MatchManagerProps) => {
     }
 
     try {
+      const phoneDigits = newTeamPhone.replace(/\D/g, '');
+      let formattedPhone: string | null = null;
+      if (phoneDigits) {
+        formattedPhone = phoneDigits.startsWith('55') && phoneDigits.length >= 12
+          ? phoneDigits
+          : phoneDigits.length >= 10 && phoneDigits.length <= 11
+            ? `55${phoneDigits}`
+            : phoneDigits;
+      }
+
       const { error } = await supabase
         .from('teams')
         .insert({
           category_id: categoryId,
           name: newTeamName,
           seed_position: teams.length + 1,
+          phone: formattedPhone,
         });
 
       if (error) throw error;
 
       toast.success('Dupla adicionada!');
       setNewTeamName('');
+      setNewTeamPhone('');
       loadData();
     } catch (error: any) {
       toast.error(error.message || 'Erro ao adicionar dupla');
@@ -2087,6 +2120,12 @@ const MatchManager = ({ categoryId }: MatchManagerProps) => {
               required
               className="flex-1"
             />
+            <Input
+              placeholder="WhatsApp (ex: 11999998888)"
+              value={newTeamPhone}
+              onChange={(e) => setNewTeamPhone(e.target.value)}
+              className="w-48"
+            />
             <Button type="submit" className="gap-2 w-full sm:w-auto">
               <Plus className="w-4 h-4" />
               Adicionar
@@ -2242,6 +2281,14 @@ const MatchManager = ({ categoryId }: MatchManagerProps) => {
                                 <option value="3">Quadra 3</option>
                                 <option value="4">Quadra 4</option>
                               </select>
+                              <NotifyMatchPopover
+                                matchId={match.id}
+                                matchNumber={match.match_number}
+                                team1={team1 ? { id: team1.id, name: team1.name, phone: (team1 as any).phone ?? null } : null}
+                                team2={team2 ? { id: team2.id, name: team2.name, phone: (team2 as any).phone ?? null } : null}
+                                notifications={notifications[match.id] ?? []}
+                                onNotificationSent={() => loadData()}
+                              />
                             </>
                           )}
                           {match.status === 'completed' && (
@@ -2269,6 +2316,12 @@ const MatchManager = ({ categoryId }: MatchManagerProps) => {
                           disabled={match.status === 'completed'}
                         >
                           <span className="truncate">{team1!.name}</span>
+                          {notifications[match.id]?.some(n => n.team_id === match.team1_id && n.status === 'sent') && (
+                            <span className="text-green-500 ml-1" title="Notificado">✓</span>
+                          )}
+                          {notifications[match.id]?.some(n => n.team_id === match.team1_id && n.status === 'failed') && (
+                            <span className="text-red-500 ml-1" title="Falha no envio">⚠️</span>
+                          )}
                         </Button>
                         <Button
                           variant={match.winner_id === team2!.id ? 'default' : 'outline'}
@@ -2277,6 +2330,12 @@ const MatchManager = ({ categoryId }: MatchManagerProps) => {
                           disabled={match.status === 'completed'}
                         >
                           <span className="truncate">{team2!.name}</span>
+                          {notifications[match.id]?.some(n => n.team_id === match.team2_id && n.status === 'sent') && (
+                            <span className="text-green-500 ml-1" title="Notificado">✓</span>
+                          )}
+                          {notifications[match.id]?.some(n => n.team_id === match.team2_id && n.status === 'failed') && (
+                            <span className="text-red-500 ml-1" title="Falha no envio">⚠️</span>
+                          )}
                         </Button>
                       </div>
                     </div>
