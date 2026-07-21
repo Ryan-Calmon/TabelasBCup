@@ -10,6 +10,7 @@ import AdminAuth from "./pages/AdminAuth";
 import AdminSignup from "./pages/AdminSignup";
 import AdminDashboard from "./pages/AdminDashboard";
 import CategoryView from "./pages/CategoryView";
+import SorteioFake from "./pages/SorteioFake";
 
 const queryClient = new QueryClient();
 
@@ -25,6 +26,7 @@ const App = () => (
           <Route path="/admin/signup" element={<AdminSignup />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/category/:categoryId" element={<CategoryView />} />
+          <Route path="/sorteio" element={<SorteioFake />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

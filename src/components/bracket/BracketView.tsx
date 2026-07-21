@@ -5,7 +5,7 @@ import MatchCard from './MatchCard';
 import PodiumView from './PodiumView';
 import ClassicBracketView from './ClassicBracketView';
 import { buildRounds, getFinalsMatchNumbers } from '@/lib/brackets';
-import { LayoutGrid, GitBranch } from 'lucide-react';
+import { LayoutGrid, GitBranch, Trophy } from 'lucide-react';
 
 type Match = Database['public']['Tables']['matches']['Row'];
 type Team = Database['public']['Tables']['teams']['Row'];
@@ -27,6 +27,7 @@ const BracketView = ({ categoryId }: BracketViewProps) => {
     if (typeof window === 'undefined') return 'classic';
     return (window.localStorage.getItem(VIEW_STORAGE_KEY) as ViewMode) || 'classic';
   });
+  const [showBracket, setShowBracket] = useState(false);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -47,6 +48,18 @@ const BracketView = ({ categoryId }: BracketViewProps) => {
           schema: 'public',
           table: 'matches',
           filter: `category_id=eq.${categoryId}`,
+        },
+        () => {
+          loadBracket();
+        }
+      )
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'categories',
+          filter: `id=eq.${categoryId}`,
         },
         () => {
           loadBracket();
@@ -107,10 +120,18 @@ const BracketView = ({ categoryId }: BracketViewProps) => {
   }
 
   const numTeams = category?.num_teams || 16;
+  const isCompleted = category?.status === 'completed';
 
-  // Pódio quando finalizada
-  if (category?.status === 'completed') {
-    return <PodiumView matches={matches} teams={teams} numTeams={numTeams} />;
+  // Pódio quando finalizada (a menos que o usuário peça para ver o chaveamento)
+  if (isCompleted && !showBracket) {
+    return (
+      <PodiumView
+        matches={matches}
+        teams={teams}
+        numTeams={numTeams}
+        onShowBracket={() => setShowBracket(true)}
+      />
+    );
   }
 
   const rounds = buildRounds(numTeams, matches).filter((r) => r.matches.length > 0);
@@ -120,6 +141,15 @@ const BracketView = ({ categoryId }: BracketViewProps) => {
 
   return (
     <div className="space-y-6">
+      {isCompleted && (
+        <button
+          type="button"
+          onClick={() => setShowBracket(false)}
+          className="inline-flex items-center gap-2 font-mono-tab text-[11px] uppercase tracking-[0.25em] text-muted-foreground hover:text-accent transition-colors"
+        >
+          <Trophy className="w-3.5 h-3.5" /> voltar ao pódio
+        </button>
+      )}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border border-border p-2">
         <div className="font-mono-tab text-[10px] uppercase tracking-[0.3em] text-muted-foreground px-1">
           {matches.length} jogos · {numTeams} duplas

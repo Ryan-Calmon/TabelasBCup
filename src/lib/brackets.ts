@@ -112,13 +112,25 @@ export function buildRounds(numTeams: number, matches: Match[]): RoundGroup[] {
       return [
         W('Primeira Rodada', inRange(matches, 1, 6)),
         W('Segunda Rodada', inRange(matches, 7, 10)),
-        L('Chave de Perdedores R1', inRange(matches, 11, 13)),
-        L('Chave de Perdedores R2', inRange(matches, 14, 16)),
+        L('Chave de Perdedores R1', inRange(matches, 11, 12)),
+        L('Chave de Perdedores R2', inRange(matches, 13, 16)),
         W('Vaga para a Semi-Final - Vencedores', inRange(matches, 17, 18)),
         L('Chave de Perdedores R3', inRange(matches, 19, 20)),
         L('Vaga para a Semi-Final - Perdedores', inRange(matches, 21, 22)),
         W('SEMI-FINAL', inRange(matches, 23, 24)),
         Finais(25, 26),
+      ];
+    case 15:
+      return [
+        W('Primeira Rodada', inRange(matches, 1, 7)),
+        W('Segunda Rodada', inRange(matches, 8, 11)),
+        L('Chave de Perdedores R1', inRange(matches, 12, 14)),
+        L('Chave de Perdedores R2', inRange(matches, 15, 18)),
+        L('Chave de Perdedores R3', inRange(matches, 19, 20)),
+        W('Vaga para a Semi-Final - Vencedores', inRange(matches, 21, 22)),
+        L('Vaga para a Semi-Final - Perdedores', inRange(matches, 23, 24)),
+        W('SEMI-FINAL', inRange(matches, 25, 26)),
+        Finais(27, 28),
       ];
     case 16:
       return [
@@ -159,6 +171,20 @@ export function buildRounds(numTeams: number, matches: Match[]): RoundGroup[] {
         L('Vaga para a Semi-Final - Perdedores', inRange(matches, 29, 30)),
         W('SEMI-FINAL', inRange(matches, 31, 32)),
         Finais(33, 34),
+      ];
+    case 19:
+      return [
+        W('Primeira Rodada', inRange(matches, 1, 3)),
+        W('Segunda Rodada', inRange(matches, 4, 11)),
+        L('Chave de Perdedores R1', inRange(matches, 12, 14)),
+        L('Chave de Perdedores R2', inRange(matches, 15, 18)),
+        W('Terceira Rodada', inRange(matches, 19, 22)),
+        L('Chave de Perdedores R3', inRange(matches, 23, 26)),
+        L('Chave de Perdedores R4', inRange(matches, 27, 28)),
+        W('Vaga para a Semi-Final - Vencedores', inRange(matches, 29, 30)),
+        L('Vaga para a Semi-Final - Perdedores', inRange(matches, 31, 32)),
+        W('SEMI-FINAL', inRange(matches, 33, 34)),
+        Finais(35, 36),
       ];
     case 20:
       return [
@@ -236,9 +262,11 @@ export function getFinalsMatchNumbers(numTeams: number): FinalsInfo {
     case 9:  return { finalMatchNumber: 16, thirdPlaceMatchNumber: 15 };
     case 12: return { finalMatchNumber: 22, thirdPlaceMatchNumber: 21 };
     case 14: return { finalMatchNumber: 26, thirdPlaceMatchNumber: 25 };
+    case 15: return { finalMatchNumber: 28, thirdPlaceMatchNumber: 27 };
     case 16: return { finalMatchNumber: 30, thirdPlaceMatchNumber: 29 };
     case 17: return { finalMatchNumber: 32, thirdPlaceMatchNumber: 31 };
     case 18: return { finalMatchNumber: 34, thirdPlaceMatchNumber: 33 };
+    case 19: return { finalMatchNumber: 36, thirdPlaceMatchNumber: 35 };
     case 20: return { finalMatchNumber: 38, thirdPlaceMatchNumber: 37 };
     case 24: return { finalMatchNumber: 46, thirdPlaceMatchNumber: 45 };
     case 25: return { finalMatchNumber: 48, thirdPlaceMatchNumber: 47 };

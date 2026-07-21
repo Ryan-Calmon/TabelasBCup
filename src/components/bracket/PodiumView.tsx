@@ -1,5 +1,5 @@
 import { Database } from '@/integrations/supabase/types';
-import { Trophy } from 'lucide-react';
+import { Trophy, GitBranch } from 'lucide-react';
 import { getFinalsMatchNumbers } from '@/lib/brackets';
 
 type Match = Database['public']['Tables']['matches']['Row'];
@@ -9,9 +9,10 @@ interface PodiumViewProps {
   matches: Match[];
   teams: Record<string, Team>;
   numTeams: number;
+  onShowBracket?: () => void;
 }
 
-const PodiumView = ({ matches, teams, numTeams }: PodiumViewProps) => {
+const PodiumView = ({ matches, teams, numTeams, onShowBracket }: PodiumViewProps) => {
   const { finalMatchNumber, thirdPlaceMatchNumber } = getFinalsMatchNumbers(numTeams);
 
   const finalMatch = matches.find((m) => m.match_number === finalMatchNumber);
@@ -71,6 +72,18 @@ const PodiumView = ({ matches, teams, numTeams }: PodiumViewProps) => {
           </p>
         </div>
       </div>
+
+      {onShowBracket && (
+        <div className="text-center">
+          <button
+            type="button"
+            onClick={onShowBracket}
+            className="inline-flex items-center gap-2 px-4 py-2 border border-border font-mono-tab text-[11px] uppercase tracking-[0.25em] text-muted-foreground hover:border-accent hover:text-accent transition-colors"
+          >
+            <GitBranch className="w-3.5 h-3.5" /> ver chaveamento
+          </button>
+        </div>
+      )}
     </div>
   );
 };

@@ -19,7 +19,7 @@ interface CategoryManagerProps {
 
 const CategoryManager = ({ tournamentId, categories, onUpdate }: CategoryManagerProps) => {
   const [categoryName, setCategoryName] = useState('');
-  const [numTeams, setNumTeams] = useState<8 | 9 | 12 | 14 | 16 | 17 | 18 | 20 | 24 | 25 | 32>(16);
+  const [numTeams, setNumTeams] = useState<8 | 9 | 12 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 24 | 25 | 32>(16);
   const [loading, setLoading] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editingName, setEditingName] = useState('');
@@ -225,7 +225,7 @@ const CategoryManager = ({ tournamentId, categories, onUpdate }: CategoryManager
               <select
                 id="numTeams"
                 value={numTeams}
-                onChange={(e) => setNumTeams(Number(e.target.value) as 8 | 9 | 12 | 14 | 16 | 17 | 18 | 20 | 24 | 25 | 32)}
+                onChange={(e) => setNumTeams(Number(e.target.value) as 8 | 9 | 12 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 24 | 25 | 32)}
                 className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                 disabled={loading}
               >
@@ -233,9 +233,11 @@ const CategoryManager = ({ tournamentId, categories, onUpdate }: CategoryManager
                 <option value={9}>9 duplas (16 jogos)</option>
                 <option value={12}>12 duplas (22 jogos)</option>
                 <option value={14}>14 duplas (26 jogos)</option>
+                <option value={15}>15 duplas (28 jogos)</option>
                 <option value={16}>16 duplas (30 jogos)</option>
                 <option value={17}>17 duplas (32 jogos)</option>
                 <option value={18}>18 duplas (34 jogos)</option>
+                <option value={19}>19 duplas (36 jogos)</option>
                 <option value={20}>20 duplas (38 jogos)</option>
                 <option value={24}>24 duplas (46 jogos)</option>
                 <option value={25}>25 duplas (48 jogos)</option>
