@@ -3,9 +3,10 @@ import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
 import { Database } from '@/integrations/supabase/types';
 import { getOrCreateDefaultTournament } from '@/lib/defaultTournament';
-import { ArrowUpRight, Trophy } from 'lucide-react';
+import { ArrowUpRight, Trophy, Clock } from 'lucide-react';
 import logo from '@/assets/logo.png';
 import CourtsBoard from '@/components/bracket/CourtsBoard';
+import { SCHEDULE, getCategorySchedule } from '@/lib/schedule';
 
 type Category = Database['public']['Tables']['categories']['Row'];
 
@@ -113,7 +114,9 @@ const Index = () => {
             </div>
           ) : (
             <ul className="grid gap-3 sm:gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {categories.map((category, idx) => (
+              {categories.map((category, idx) => {
+                const schedule = getCategorySchedule(category.name);
+                return (
                 <li key={category.id} className="animate-rise" style={{ animationDelay: `${idx * 60}ms` }}>
                   <button
                     type="button"
@@ -136,6 +139,12 @@ const Index = () => {
                         <h3 className="font-display text-3xl sm:text-4xl uppercase tracking-wide text-foreground group-hover:text-accent transition-colors leading-tight truncate">
                           {category.name}
                         </h3>
+                        {schedule && (
+                          <span className="inline-flex items-center gap-1.5 bg-accent text-accent-foreground px-2.5 py-1 font-mono-tab text-[11px] font-bold uppercase tracking-[0.2em] shadow-[0_2px_0_0_rgba(0,0,0,0.25)]">
+                            <Clock className="w-3.5 h-3.5" />
+                            {schedule.day} · {schedule.time}
+                          </span>
+                        )}
                         <div className="flex items-center gap-3 font-mono-tab text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
                           <span>{category.num_teams} duplas</span>
                           <span className="h-px flex-1 bg-border" />
@@ -150,9 +159,61 @@ const Index = () => {
                     </div>
                   </button>
                 </li>
-              ))}
+                );
+              })}
             </ul>
           )}
+        </section>
+
+        {/* Programação (schedule) */}
+        <section aria-labelledby="programacao" className="mt-16">
+          <div className="flex items-baseline justify-between mb-4">
+            <h2 id="programacao" className="font-display text-3xl uppercase tracking-wider">
+              Programação
+            </h2>
+            <span className="font-mono-tab text-[10px] uppercase tracking-[0.3em] text-muted-foreground">
+              25–26 jul
+            </span>
+          </div>
+
+          <div className="space-y-4">
+            {(['Sábado', 'Domingo'] as const).map((day, dayIdx) => {
+              const entries = SCHEDULE.filter((entry) => entry.day === day);
+              return (
+                <div key={day} className="bg-card border border-border p-5 sm:p-6">
+                  <div className="flex items-baseline justify-between gap-3 mb-6">
+                    <h3 className="font-display text-2xl sm:text-3xl uppercase tracking-wide text-foreground">
+                      {day}
+                    </h3>
+                    <span className="font-mono-tab text-[10px] uppercase tracking-[0.3em] text-accent">
+                      {dayIdx === 0 ? '25 jul' : '26 jul'}
+                    </span>
+                  </div>
+
+                  <div className="relative overflow-x-auto pb-1">
+                    <div className="flex items-start min-w-max">
+                      {entries.map((entry, i) => (
+                        <div key={entry.category} className="relative flex items-start">
+                          <div className="flex flex-col items-start w-36 sm:w-44 pr-4">
+                            <span className="w-2.5 h-2.5 rounded-full bg-accent ring-4 ring-accent/15 mb-3" />
+                            <span className="font-mono-tab text-xl sm:text-2xl font-bold text-foreground tracking-wide">
+                              {entry.time}
+                            </span>
+                            <span className="font-mono-tab text-[10px] uppercase tracking-[0.2em] text-muted-foreground leading-snug mt-1">
+                              {entry.category}
+                            </span>
+                          </div>
+                          {i < entries.length - 1 && (
+                            <span className="h-px w-8 sm:w-10 bg-border mt-[5px] shrink-0" aria-hidden />
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </section>
 
         <footer className="mt-20 pt-8 border-t border-border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 font-mono-tab text-[10px] uppercase tracking-[0.3em] text-muted-foreground">
