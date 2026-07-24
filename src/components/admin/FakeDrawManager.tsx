@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
-import { Plus, Shuffle, Trash2, RotateCcw } from 'lucide-react';
+import { Plus, Shuffle, Trash2 } from 'lucide-react';
 import { Database } from '@/integrations/supabase/types';
 import BracketView from '@/components/bracket/BracketView';
 
@@ -113,10 +113,6 @@ const FakeDrawManager = ({ fakeCategory, realCategories, onUpdate, onDelete }: F
 
       onUpdate(id, { phase: 'revealed', matchedCategoryId: match.id });
     }, REVEAL_DELAY_MS);
-  };
-
-  const handleResetDraw = () => {
-    onUpdate(id, { phase: 'teams', matchedCategoryId: null });
   };
 
   return (
@@ -235,17 +231,6 @@ const FakeDrawManager = ({ fakeCategory, realCategories, onUpdate, onDelete }: F
 
       {phase === 'revealed' && matchedCategory && (
         <div className="space-y-4">
-          <div className="flex justify-end">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleResetDraw}
-              className="gap-2 rounded-none border-ink/20 hover:bg-ink hover:text-volt font-mono-tab text-[11px] uppercase tracking-[0.2em]"
-            >
-              <RotateCcw className="w-3.5 h-3.5" />
-              sortear novamente
-            </Button>
-          </div>
           <BracketView categoryId={matchedCategory.id} />
         </div>
       )}

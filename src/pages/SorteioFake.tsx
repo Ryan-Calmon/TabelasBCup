@@ -17,9 +17,35 @@ type Category = Database['public']['Tables']['categories']['Row'];
 
 const NUM_TEAMS_OPTIONS = [8, 9, 12, 14, 15, 16, 17, 18, 19, 20, 24, 25, 32] as const;
 
+// Design resolution for Instagram (9:16) recording.
+const STAGE_WIDTH = 720;
+const STAGE_HEIGHT = 1280;
+
+const getStageScale = () => {
+  if (typeof window === 'undefined') return 1;
+  const scaleX = window.innerWidth / STAGE_WIDTH;
+  const scaleY = window.innerHeight / STAGE_HEIGHT;
+  return Math.min(scaleX, scaleY);
+};
+
+/** Scales the stage to fit the current window while keeping the 9:16 ratio intact. */
+const useStageScale = () => {
+  const [scale, setScale] = useState(getStageScale);
+
+  useEffect(() => {
+    const updateScale = () => setScale(getStageScale());
+
+    window.addEventListener('resize', updateScale);
+    return () => window.removeEventListener('resize', updateScale);
+  }, []);
+
+  return scale;
+};
+
 const SorteioFake = () => {
   useAdminTheme();
   const navigate = useNavigate();
+  const stageScale = useStageScale();
 
   const [loading, setLoading] = useState(true);
   const [realCategories, setRealCategories] = useState<Category[]>([]);
@@ -118,14 +144,22 @@ const SorteioFake = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-paper text-ink flex items-center justify-center font-mono-tab text-xs uppercase tracking-[0.3em] text-ink/60 animate-flicker">
+      <div className="fixed inset-0 bg-black flex items-center justify-center font-mono-tab text-xs uppercase tracking-[0.3em] text-ink/60 animate-flicker">
         carregando…
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-paper text-ink">
+    <div className="fixed inset-0 w-full h-full bg-black flex items-center justify-center overflow-hidden">
+      <div
+        style={{
+          width: STAGE_WIDTH,
+          height: STAGE_HEIGHT,
+          transform: `scale(${stageScale})`,
+        }}
+        className="flex-shrink-0 bg-paper text-ink overflow-y-auto"
+      >
       <div className="container mx-auto p-3 sm:p-6 space-y-4 sm:space-y-6">
         <header className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4 border-b border-ink/15 pb-4">
           <div className="space-y-1">
@@ -234,6 +268,7 @@ const SorteioFake = () => {
             </Tabs>
           </CardContent>
         </Card>
+      </div>
       </div>
     </div>
   );
